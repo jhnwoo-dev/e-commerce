@@ -14,21 +14,8 @@ Tag.init(
             primaryKey: true,
             autoIncrement: true,
         },
-        product_id: {
-            type: DataTypes.INTEGER,
-            references: {
-                model: Product,
-                key: "id",
-            },
-            onDelete: "CASCADE",
-        },
-        tag_id: {
-            type: DataTypes.INTEGER,
-            references: {
-                model: Tag,
-                key: "id",
-            },
-            onDelete: "CASCADE",
+        tag_name: {
+            type: DataTypes.STRING,
         },
     },
     {
