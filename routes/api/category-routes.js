@@ -22,18 +22,99 @@ router.get("/", (req, res) => {
 router.get("/:id", (req, res) => {
     // find one category by its `id` value
     // be sure to include its associated Products
+    Category.findByPk(req.params.id, {
+        include: [Product],
+    })
+        .then((data) => {
+            if (data) {
+                return res.json(data);
+            } else {
+                res.status(404).json({
+                    msg: "There is no such category",
+                });
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+            res.status(500).json({
+                msg: "An error has occured",
+                err: err,
+            });
+        });
 });
 
 router.post("/", (req, res) => {
     // create a new category
+    Category.create({
+        id: req.body.id,
+        category_name: req.body.category_name,
+    })
+        .then((data) => {
+            res.status(201).json(data);
+        })
+        .catch((err) => {
+            console.log(err);
+            res.status(500).json({
+                msg: "An error has occured",
+                err: err,
+            });
+        });
 });
 
 router.put("/:id", (req, res) => {
     // update a category by its `id` value
+    Category.update(
+        {
+            id: req.body.id,
+            category_name: req.body.category_name,
+        },
+        {
+            where: {
+                id: req.params.id,
+            },
+        }
+    )
+        .then((data) => {
+            if (data[0]) {
+                return res.json(data);
+            } else {
+                return res.status(404).json({
+                    msg: "There is no such category",
+                });
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+            res.status(500).json({
+                msg: "An error has occured",
+                err: err,
+            });
+        });
 });
 
 router.delete("/:id", (req, res) => {
     // delete a category by its `id` value
+    Category.destroy({
+        where: {
+            id: req.params.id,
+        },
+    })
+        .then((data) => {
+            if (data) {
+                return res.json(data);
+            } else {
+                return res.status(404).json({
+                    msg: "There is no such category",
+                });
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+            res.status(500).json({
+                msg: "An error has occured",
+                err: err,
+            });
+        });
 });
 
 module.exports = router;

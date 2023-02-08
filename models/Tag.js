@@ -1,6 +1,7 @@
 const { Model, DataTypes } = require("sequelize");
 
 const sequelize = require("../config/connection.js");
+const Product = require("./Product.js");
 
 class Tag extends Model {}
 
@@ -13,12 +14,22 @@ Tag.init(
             primaryKey: true,
             autoIncrement: true,
         },
-        // product_id: {
-        //     type: DataTypes.INTEGER,
-        // },
-        // tag_id: {
-        //     type: DataTypes.INTEGER,
-        // },
+        product_id: {
+            type: DataTypes.INTEGER,
+            references: {
+                model: Product,
+                key: "id",
+            },
+            onDelete: "CASCADE",
+        },
+        tag_id: {
+            type: DataTypes.INTEGER,
+            references: {
+                model: Tag,
+                key: "id",
+            },
+            onDelete: "CASCADE",
+        },
     },
     {
         sequelize,
